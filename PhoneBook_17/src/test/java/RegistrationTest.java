@@ -10,8 +10,8 @@ public class RegistrationTest extends TestBase {
 
     @BeforeMethod
     public void preCondition(){
-        if(isLogged()){
-            logout();
+        if(app.getUser().isLogged()){
+            app.getUser().logout();
         }
     }
 
@@ -22,11 +22,11 @@ public class RegistrationTest extends TestBase {
         String email = "name" + i + "@mail.com";
         String password = "$Abcdef12345";
 
-        openLoginRegistrationForm();
-        fillLoginRegistrationForm(email, password);
-        submitRegistration();
-        pause(3);
-        Assert.assertTrue(isElementPresent(By.xpath("//button")));
+        app.getUser().openLoginRegistrationForm();
+        app.getUser().fillLoginRegistrationForm(email, password);
+        app.getUser().submitRegistration();
+        app.getUser().pause(3);
+        Assert.assertTrue(app.getUser().isElementPresent(By.xpath("//button")));
     }
 
 //    @Test
