@@ -12,10 +12,11 @@ public class HelperBase {
 
     public HelperBase(WebDriver wd) {
         this.wd = wd;
-
     }
 
-    public boolean isElementPresent(By locator){return wd.findElements(locator).size() > 0;}
+    public boolean isElementPresent(By locator){
+        return wd.findElements(locator).size() > 0;
+    }
 
     public void type(By locator, String text){
         WebElement element = wd.findElement(locator);
@@ -29,12 +30,15 @@ public class HelperBase {
     }
 
     public void pause(int time){
-        wd.manage().timeouts().implicitlyWait(time, TimeUnit.SECONDS);
+//        wd.manage().timeouts().implicitlyWait(time, TimeUnit.SECONDS);
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public String getText(By locator){
         return wd.findElement(locator).getText();
-
     }
-
 }

@@ -1,8 +1,11 @@
 package manager;
 
+import models.User;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class HelperUser extends HelperBase{
 
@@ -18,14 +21,22 @@ public class HelperUser extends HelperBase{
     }
 
     public boolean isLogged(){
-        return isElementPresent(By.xpath("//button[text='Sign Out']"));
+        return isElementPresent(By.xpath("//button"));
     }
 
-    public void logout() {
-        WebElement logoutButton = wd.findElement(By.xpath("//button"));
-        if (logoutButton.getText().equals("Sign Out")) {
-            click(By.xpath("//button"));
-        }
+
+    public void login(User user){
+        openLoginRegistrationForm();
+        fillLoginRegistrationForm(user);
+        submitLogin();
+        pause(1000);
+    }
+
+    public void logout(){
+        click(By.xpath("//button"));
+    }
+
+    public void openStartForm(){click(By.xpath("//a[text() ='HOME']"));
     }
 
     public void openLoginRegistrationForm(){
@@ -36,6 +47,31 @@ public class HelperUser extends HelperBase{
         type(By.xpath("//input[1]"), email);
         type(By.xpath("//input[2]"), password);
     }
+    public void fillLoginRegistrationForm(User user){
+        type(By.xpath("//input[1]"), user.getEmail());
+        type(By.xpath("//input[2]"), user.getPassword());
+    }
 
+    public boolean isAlertPresent() {
 
+        Alert alert = new WebDriverWait(wd, 10)
+                .until(ExpectedConditions.alertIsPresent());
+        if(alert == null){
+            return false;
+        } else {
+            wd.switchTo().alert();
+            System.out.println(alert.getText());
+            alert.accept(); // for Ok button
+            // alert.dismiss() for Cancel button
+            // alert.sendKeys() for input data
+            return true;
+        }
+    }
+
+    public boolean isErrorMessageInFormat(){
+        Alert alert = new WebDriverWait(wd, 10)
+                .until(ExpectedConditions.alertIsPresent());
+        String errorMessage = "Wrong email or password";
+        return alert.getText().contains(errorMessage);
+    }
 }

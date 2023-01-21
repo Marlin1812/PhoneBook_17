@@ -3,6 +3,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.remote.BrowserType;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
@@ -12,15 +13,16 @@ import java.util.concurrent.TimeUnit;
 
 public class TestBase {
 
-    public static ApplicationManager app = new ApplicationManager();
+    public static ApplicationManager app = new ApplicationManager(
+            System.getProperty("browser", BrowserType.CHROME));
 //    WebDriver wd;
 
-    @BeforeSuite
+    @BeforeSuite(alwaysRun = true)
     public void setUp(){
         app.init();
     }
 
-    @AfterSuite
+    @AfterSuite(alwaysRun = true)
     public void tearDown(){
         app.stop();
     }
@@ -40,7 +42,7 @@ public class TestBase {
 //    }
 
 //    public void openLoginRegistrationForm(){
-//        click(By.xpath("//a[text()='LOGIN']"));
+//       click(By.xpath("//a[text()='LOGIN']"));
 //    }
 //
 //    public void fillLoginRegistrationForm(String email, String password){
@@ -60,15 +62,10 @@ public class TestBase {
 //    }
 
 //    public boolean isLogged(){
-//        return isElementPresent(By.xpath("//button[text='Sign Out']"));
+//        return isElementPresent(By.xpath("//button"));
 //    }
 //
-//    public void logout() {
-//        WebElement logoutButton = wd.findElement(By.xpath("//button"));
-//        if (logoutButton.getText().equals("Sign Out")) {
-//            click(By.xpath("//button"));
-//        }
+//    public void logout(){
+//        click(By.xpath("//button"));
 //    }
-
-//    public void logout(){click(By.xpath("//button[text='Sign Out']"));}
 }
